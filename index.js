@@ -3,15 +3,33 @@ const fs = require('fs');
 const PORT = 3000;
 
 const server = http.createServer((req, res) => {
-  console.log(req.method, req.url);
-  
-  fs.readFile('./views/index.html', { encoding: 'utf8' }, (err, data) => {
-    if (err) {
-      console.log(err);
-      return;
+  const { method, url } = req;
+  if (method === 'GET') {
+    if (url === '/') {
+      fs.readFile('./views/index.html', { encoding: 'utf8' }, (err, data) => {
+        if (err) {
+          throw err;
+        }
+        res.end(data);
+      });
     }
-    res.end(data);
-  });
+    if (url === '/about') {
+      fs.readFile('./views/about.html', { encoding: 'utf8' }, (err, data) => {
+        if (err) {
+          throw err;
+        }
+        res.end(data);
+      });
+    }
+    if (url === '/contact') {
+      fs.readFile('./views/contact.html', { encoding: 'utf8' }, (err, data) => {
+        if (err) {
+          throw err;
+        }
+        res.end(data);
+      });
+    }
+  }
 });
 
 server.listen(PORT, () => {
